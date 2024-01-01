@@ -1,0 +1,35 @@
+DELIMITER $$ 
+CREATE PROCEDURE myResult(original_rate float,OUT discount_rate float) 
+NO SQL 
+BEGIN 
+IF (original_rate>500) THEN 
+SET discount_rate=original_rate*.5; 
+ELSEIF (original_rate<=500 AND original_rate>250) THEN 
+SET discount_rate=original_rate*.8; 
+ELSE 
+SET discount_rate=original_rate; 
+END IF; 
+select discount_rate; 
+END$$ 
+DELIMITER ; 
+
+
+
+db.orders.aggregate( [$match: { size: "medium" } },{$group: { _id: "$name", totalQuantity: { $sum: "$quantity" } }}] )
+
+db.Books.aggregate([{ "$group": { "_id": null, "avgCost": { "$avg": "$price" } } },  { "$project": { "_id": false, "averageCost": "$avgCost" } }])
+
+db.Books.aggregate([{ "$group": { "_id": "shyam", "avgCost": { "$avg": "$pages" } } },  { "$project": { "_id": false, "averageCost": "$avgCost" } }])
+
+
+db.Books.aggregate([
+{ $match :{$or:[{'author':'Shyam'},{'co_author':'Shyam'}]} },
+{ $group :{_id:'$pages', avgPages:{$avg: "$pages"} },
+{ $project:{"AveragePages":'$avgPages'}}
+])
+
+ db.Books.aggregate([ 
+{$match:{$or:[{author:"Shyam"},{co_author:'Shyam'}]}} ,
+{ $group: { _id: 'author', avgpages: { $avg: '$pages' } } },
+{ $project: { 'averagePages': '$avgpages' } }
+])

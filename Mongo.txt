@@ -1,0 +1,12 @@
+Mongo
+
+ db.Books.aggregate([
+... {$match:{$or:[{author:"Shyam"},{co_author:'Shyam'}]}} ,
+... { $group: { _id: 'author', avgpages: { $avg: '$pages' } } },
+... { $project: { _id:false,'averagePages': '$avgpages' } }
+... ])
+
+https://github.com/gauravrajput89/DAC_demo/blob/master/test_query.txt
+
+https://github.com/avk1996/mongodb
+

@@ -1,0 +1,36 @@
+Cursor :
+
+delimiter $$
+create procedure list(INOUT n_list VARCHAR(5000))
+begin
+declare done int default 0;
+declare f_name varchar(100);
+declare cur CURSOR for select FIRST_NAME from Worker;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+open cur;
+label:LOOP
+fetch cur into f_name;
+if done=1 then 
+leave label;
+end if;
+set n_list=CONCAT(f_name, ",", n_list);
+end loop label;
+close cur;
+end $$
+delimiter;
+
+
+TRIGGER : 
+
+DELIMITER //
+
+CREATE TRIGGER after_emp_insert
+AFTER INSERT ON Worker
+FOR EACH ROW
+BEGIN
+    INSERT INTO EMP_LOG_DETAILS (FIRST_NAME, LAST_NAME, SALARY)
+    VALUES (NEW.FIRST_NAME, NEW.LAST_NAME, NEW.SALARY);
+END //
+DELIMITER ;
+
+INSERT INTO Worker(WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES(009, 'Sneha', 'Musmade', 1000, '24-02-20 09.00.00', 'DEV');

@@ -1,0 +1,25 @@
+Trigger:
+
+CREATE TABLE salary_changes (
+    change_id INT AUTO_INCREMENT PRIMARY KEY,
+    emp_id INT,
+    old_salary DECIMAL(10, 2),
+    new_salary DECIMAL(10, 2),
+    change_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DELIMITER //
+mCREATE TRIGGER on_salary_update
+AFTER UPDATE ON Worker
+FOR EACH ROW
+BEGIN
+IF OLD.salary != NEW.salary THEN
+INSERT INTO salary_changes (emp_id, old_salary, new_salary)
+VALUES (OLD.worker_id, OLD.salary, NEW.salary);
+END IF;
+END //
+
+
+update worker set salary=10 where worker_id=001;
+
+select * from salary_changes;

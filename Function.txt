@@ -1,0 +1,23 @@
+Function
+
+DELIMITER $$
+
+CREATE FUNCTION GetTotalSalary(department_id INT)
+RETURNS DECIMAL(10,2)
+reads sql data
+begin
+declare total_salary decimal(10,2)
+
+select sum(salary) INTO total salary
+FROM worker
+WHERE dept_id= department_id;
+
+IF total_salary is NULL then
+SET total_salary=0;
+END IF;
+
+Return Total_salary;
+
+END $$
+DELIMITER;
+

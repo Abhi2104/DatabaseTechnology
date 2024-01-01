@@ -1,0 +1,51 @@
+
+1 SOLVE THE BELOW QUESTIONS EACH QUESTION OF 2 MARKS
+ 
+ i. WRITE AN SQL QUERY TO FETCH FULLNAME , SALARY , JOINING_DATE AND DEPARTMENT FROM 
+WORKER TABLE. 
+
+ ii.WRITE AN SQL QUERY TO FETCH ID , FULLNAME , SALARY AND DEPARTMENT WHOSE DEPARTMENT 
+IS HR OR ADMIN
+
+=> SELECT ID, FullName, Salary, Department
+FROM Employees
+WHERE Department IN ('HR', 'Admin');
+
+ iii.WRITE AN SQL QUERY TO FETCH ID , FULLNAME , SALARY WHOSE FIRST_NAME ENDS WITH 'a' 
+
+=> SELECT ID, CONCAT(first_name, ' ', last_name) AS FullName, Salary
+FROM employees
+WHERE RIGHT(first_name, 1) = 'a';
+
+
+ iv. WRITE AN SQL QUERY TO FEACH ALL RECORDS OF WORKER TABLE WHO HAVE JOIN IN FEB 2020
+
+SELECT * FROM Worker WHERE DAY(JOINING_DATE) = 20 AND MONTH(JOINING_DATE) = 2;
+ 
+ V. WRITE AN SQL QUERY TO FEACH ALL RECORDS OF WORKER TABLE WHO HAVE SALARY >=50000 
+AND <=100000.
+
+select * from Worker where SALARY>=50000 AND SALARY<= 100000;
+
+
+2 SOLVE THE BELOW QUESTIONS EACH QUESTION OF 3 MARKS 
+
+i.	WRITE AN SQL QUERY TO DISPLAY NUMBER OF WORKER IN EACH DEPARTMENT ALONG WITH UNIQUE DEPARTMENT NAME 
+=> select department as Department_Name, COUNT(worker_id) as Number_of_Workers from worker GROUP BY Department;
+
+ii.WRITE AN SQL QUERY TO DISPLAY DEPARTMENT NAME AND TOTAL BONUS AMOUNT TO BE PAID IN EACH DEPARTMENT 
+
+select w.department , sum(b.bonus_amount) as TOTALAMOUNT
+FROM Worker w INNER JOIN Bonus b ON w.worker_id = b.worker_ref_id
+GROUP BY w.Department;
+
+iii.	WRITE AN SQL QUERY TO DISPALY THE FULLNAME, SALARY, TOTAL YEARS OF EXPERIANCE OF EACH WORKER 
+=>select worker_id , first_name,  salary ,floor(DATEDIFF(CURDATE(),JOINING_DATE)/365) as Experience from worker;
+=>select worker_id , first_name,  salary ,ROUND((DATEDIFF(CURDATE(),JOINING_DATE)/365),1) as Experience from worker;
+
+iv.	WRITE AN SQL QUERY TO DISPALY THE DETAILS OF THE WORKER WHO IS MANAGER
+=> select w.worker_id,w.first_name,w.salary, t.worker_title 
+from Worker w inner join Title t ON w.worker_id = t.worker_ref_id 
+WHERE t.worker_title='manager';
+
+
